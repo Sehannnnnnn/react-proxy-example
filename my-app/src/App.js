@@ -1,23 +1,37 @@
 import React, { useState } from 'react';
 import './App.css';
 import Header from './components/Header';
-import BookTable from './components/BookTable';
+import Table from './components/Table';
 import DisplayBoard from './components/DisplayBoard';
-import CreateBook from './components/CreateBook';
+import Creater from './components/Creater';
 import { getAllBooks, createBook } from './services/BookService';
+import { getAllTodos, createTodo } from './services/TodoService';
 import Footer from './components/Footer';
 
 function App () {
-
+  //Book
   const [bookShelf, setBookShelf] = useState({});
   const [books, setBooks] = useState([]);
   const [numberOfBooks, setNumberBooks] = useState(0);
 
-  const handleSubmit = () => {
-      createBook(bookShelf)
+  //Todo
+  const [todoShelf, setTodoShelf] = useState({});
+  const [todos, setTodos] = useState([]);
+  const [numberOfTodos, setNumberTodos] = useState(0);
+
+  const handleSubmit = (type) => {
+    if (type === "book") {
+        createBook(bookShelf)
         .then(() => {
           setNumberBooks(numberOfBooks+1);
       });
+    }
+    if (type === "todo") {
+        createTodo(todoShelf)
+        .then(() => {
+          setNumberTodos(numberOfTodos+1);
+      });
+    }
   }
 
   const getAllBook = () => {
@@ -25,6 +39,14 @@ function App () {
       .then(data => {
         setBooks(data);
         setNumberBooks(data.length);
+      });
+  }
+
+  const getAllTodo = () => {
+    getAllTodos()
+      .then(data => {
+        setTodos(data);
+        setNumberTodos(data.length);
       });
   }
 
@@ -45,16 +67,38 @@ function App () {
     <div className="main-wrapper">
       <div className="main">
         <Header />
-        <CreateBook 
-          bookShelf={bookShelf}
-          onChangeForm={handleOnChangeForm}
-          handleSubmit={handleSubmit}
-        />
-        <DisplayBoard 
-          numberOfBooks={numberOfBooks} 
-          getAllBook={getAllBook} 
-        />
-        <BookTable books={books} />
+        <div className="container">
+
+          <div>
+            <Creater
+              type={"book"}
+              bookShelf={bookShelf}
+              onChangeForm={handleOnChangeForm}
+              handleSubmit={() => handleSubmit("book")}
+            />
+            <DisplayBoard
+              type={"book"}
+              numberOfData={numberOfBooks} 
+              getAllData={getAllBook} 
+            />
+            <Table type={"book"} content={books} />
+          </div>
+
+          <div>
+            <Creater
+                type={"todo"}
+                bookShelf={todoShelf}
+                onChangeForm={handleOnChangeForm}
+                handleSubmit={() => handleSubmit("todo")}
+              />
+            <DisplayBoard 
+              type={"todo"}
+              numberOfData={numberOfTodos} 
+              getAllData={getAllTodo} 
+            />
+            <Table type={"todo"} content={todos} />
+          </div>
+        </div>
         <Footer />
       </div>
     </div>

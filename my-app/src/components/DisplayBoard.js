@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DisplayBoard = ({numberOfBooks, getAllBook}) => {
+const DisplayBoard = ({type, numberOfData, getAllData}) => {
     
     return(
         <div className="display-wrapper">
@@ -8,11 +8,11 @@ const DisplayBoard = ({numberOfBooks, getAllBook}) => {
                 <div className="display-board">
                     <h4>생성된 수</h4>
                     <div className="number">
-                    {numberOfBooks}
+                    {numberOfData}
                     </div>
                 </div>
                 <div className="get-button">
-                    <button onClick={() => getAllBook()}>Get all Books</button>
+                    <button onClick={() => getAllData()}>Get all {type}s</button>
                 </div>
             </div>
         </div>
